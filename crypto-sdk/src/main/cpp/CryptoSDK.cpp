@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "../../../../../crypto-sdk/lib/crypto.h"
+#include "../../../../native/headers/crypto.h"
 
 #include "Utilities.h"
 

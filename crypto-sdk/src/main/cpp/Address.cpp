@@ -2,8 +2,8 @@
 
 #include <stdexcept>
 
-#include "../../../../../crypto-sdk/lib/address.h"
-#include "../../../../../crypto-sdk/lib/utils.h"
+#include "../../../../native/headers/address.h"
+#include "../../../../native/headers/utils.h"
 
 #include "Utilities.h"
 

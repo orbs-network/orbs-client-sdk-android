@@ -1,0 +1,7 @@
+FROM orbs:base-sdk
+
+ADD . /opt/android-sdk
+
+WORKDIR /opt/android-sdk
+
+RUN ./build.sh
