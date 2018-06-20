@@ -4,4 +4,10 @@ ADD . /opt/android-sdk
 
 WORKDIR /opt/android-sdk
 
+ARG AWS_ACCESS_KEY_ID
+
+ARG AWS_SECRET_ACCESS_KEY
+
+RUN ./download-crypto-sdk.sh
+
 RUN ./build.sh
