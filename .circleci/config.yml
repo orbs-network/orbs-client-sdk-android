@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: ./.circleci/setup-rngd.sh
+      - run: ./docker-build.base.sh
+      - run: ./docker-build.sh

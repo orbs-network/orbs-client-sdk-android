@@ -2,8 +2,8 @@
 
 #include <stdexcept>
 
-#include "../../../../../crypto-sdk/lib/ed25519key.h"
-#include "../../../../../crypto-sdk/lib/utils.h"
+#include "../../../../native/headers/ed25519key.h"
+#include "../../../../native/headers/utils.h"
 
 #include "Utilities.h"
 

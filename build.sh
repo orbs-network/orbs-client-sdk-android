@@ -1,32 +1,28 @@
 #!/bin/bash -e
 
-pushd ../crypto-sdk
-    PLATFORM=android ./build.sh
-popd
-
 if [ -z "${PLATFORM}" ]; then
     SYSNAME="$(uname -s)"
 fi
 
 # Copy external crypto-sdk dependencies to jniLibs.
 JNILIBS_DIR=crypto-sdk/src/main/jniLibs
-CRYPTO_SDK_BUILD_DIR=../crypto-sdk/build
+CRYPTO_SDK_BUILD_DIR=native
 CRYPTO_SDK_ANDROID_BUILD_DIR=${CRYPTO_SDK_BUILD_DIR}/android
 mkdir -p ${JNILIBS_DIR}/armeabi-v7a/ ${JNILIBS_DIR}/arm64-v8a/ ${JNILIBS_DIR}/x86/ ${JNILIBS_DIR}/x86_64/
-cp -f ${CRYPTO_SDK_ANDROID_BUILD_DIR}/armv7-a/lib/libcryptosdk.so ${JNILIBS_DIR}/armeabi-v7a/
-cp -f ${CRYPTO_SDK_ANDROID_BUILD_DIR}/armv8-a/lib/libcryptosdk.so ${JNILIBS_DIR}/arm64-v8a/
-cp -f ${CRYPTO_SDK_ANDROID_BUILD_DIR}/i686/lib/libcryptosdk.so ${JNILIBS_DIR}/x86/
-cp -f ${CRYPTO_SDK_ANDROID_BUILD_DIR}/westmere/lib/libcryptosdk.so ${JNILIBS_DIR}/x86_64/
+cp -f ${CRYPTO_SDK_ANDROID_BUILD_DIR}/armv7-a/libcryptosdk.so ${JNILIBS_DIR}/armeabi-v7a/
+cp -f ${CRYPTO_SDK_ANDROID_BUILD_DIR}/armv8-a/libcryptosdk.so ${JNILIBS_DIR}/arm64-v8a/
+cp -f ${CRYPTO_SDK_ANDROID_BUILD_DIR}/i686/libcryptosdk.so ${JNILIBS_DIR}/x86/
+cp -f ${CRYPTO_SDK_ANDROID_BUILD_DIR}/westmere/libcryptosdk.so ${JNILIBS_DIR}/x86_64/
 
 case "$(uname -s)" in
     Darwin)
         LOCAL_PLATFORM="mac"
-        LOCAL_LIBRARY="${LOCAL_PLATFORM}/lib/libcryptosdk.dylib"
+        LOCAL_LIBRARY="${LOCAL_PLATFORM}/libcryptosdk.dylib"
 
         ;;
     Linux)
         LOCAL_PLATFORM="linux"
-        LOCAL_LIBRARY="${LOCAL_PLATFORM}/lib/libcryptosdk.so"
+        LOCAL_LIBRARY="${LOCAL_PLATFORM}/libcryptosdk.so"
 
         ;;
     *)
