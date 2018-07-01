@@ -35,12 +35,26 @@ public class OrbsHashTests {
 
 
   @Test
-  public void test_hash256() {
-    final String KUKU_HASH = "81A50432934AF4642227A1561BF0DC3ABA0F4B82F904C11E12E82F61E034F2DA";
+  public void test_hash256_bytes() {
+    final String DATA_TO_HASH = "kuku";
     final byte[] KUKU_HASH_BYTES = {-127, -91, 4, 50, -109, 74, -12, 100, 34, 39, -95, 86, 27, -16, -36, 58, -70, 15, 75, -126, -7, 4, -63, 30, 18, -24, 47, 97, -32, 52, -14, -38};
     try {
-      byte[] kukuHash = OrbsHashUtils.hash256("kuku");
-      Assert.assertArrayEquals(KUKU_HASH_BYTES, kukuHash);
+      byte[] kukuHashBytes = OrbsHashUtils.hash256(DATA_TO_HASH);
+      Assert.assertArrayEquals(KUKU_HASH_BYTES, kukuHashBytes);
+    }
+    catch (Exception ex) {
+      Assert.fail();
+    }
+  }
+
+  @Test
+  public void test_hash256_hex_string() {
+    final String DATA_TO_HASH = "kuku";
+    final String KUKU_HASH = "81A50432934AF4642227A1561BF0DC3ABA0F4B82F904C11E12E82F61E034F2DA";
+    try {
+      byte[] kukuHashBytes = OrbsHashUtils.hash256(DATA_TO_HASH);
+      String kukuHashString = OrbsHashUtils.bytesToHex(kukuHashBytes);
+      Assert.assertEquals(KUKU_HASH.toLowerCase(), kukuHashString);
     }
     catch (Exception ex) {
       Assert.fail();
