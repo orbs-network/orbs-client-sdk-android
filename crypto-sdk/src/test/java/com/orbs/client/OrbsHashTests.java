@@ -14,14 +14,14 @@ public class OrbsHashTests {
 
 
   @Test
-  public void serialize_request_for_hash() {
+  public void serialize_request_for_hash() throws Exception {
     final String EXPECTED_REQUEST_JSON = "{\"header\":{\"contractAddressBase58\":\"abc\",\"senderAddressBase58\":\"zxc\",\"timestamp\":\"123\",\"version\":0},\"payload\":\"{some: json}\"}";
     SendTransactionRequest req = new SendTransactionRequest();
-    req.header = new SendTransactionHeader();
-    req.header.version = 0;
-    req.header.contractAddressBase58 = "abc";
-    req.header.timestamp = "123";
-    req.header.senderAddressBase58 = "zxc";
+    req.header = new SendTransactionHeader.Builder()
+      .withContractAddress("abc")
+      .withSenderAddress("zxc")
+      .withTimestamp("123")
+      .build();
     req.payload = "{some: json}";
 
     Gson gson = OrbsClient.getGsonStableSerializer();
