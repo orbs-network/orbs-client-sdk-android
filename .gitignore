@@ -35,12 +35,7 @@ captures/
 
 # IntelliJ
 *.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/dictionaries
-.idea/libraries
-.idea/caches
+.idea/
 
 # Keystore files
 # Uncomment the following line if you do not want to check your keystore files in.
@@ -64,6 +59,12 @@ fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
 
+# native libs for build
 jniLibs
 
+# cryptolib sources
 native
+
+# eclipse
+.settings
+
