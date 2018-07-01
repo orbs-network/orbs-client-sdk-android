@@ -47,6 +47,10 @@ public class OrbsClient {
     return res;
   }
 
+  public static Gson getGsonStableSerializer() {
+    return new GsonBuilder().registerTypeAdapter(SendTransactionRequest.class, new OrbsStableTransactionRequestSerializer()).create();
+  }
+
   public String generateTransactionRequest(Address contractAddress, String payload) throws Exception {
     SendTransactionRequest requestPayload = new SendTransactionRequest();
     requestPayload.payload = payload;
@@ -56,7 +60,7 @@ public class OrbsClient {
     requestPayload.header.timestamp = String.valueOf(new Date().getTime());
     requestPayload.header.contractAddressBase58 = contractAddress.toString();
 
-    Gson gsonForHash = new GsonBuilder().registerTypeAdapter(SendTransactionRequest.class, new OrbsStableTransactionRequestSerializer()).create();
+    Gson gsonForHash = OrbsClient.getGsonStableSerializer();
     String requestForHash = gsonForHash.toJson(requestPayload);
     byte[] hashBytes = OrbsHashUtils.hash256(requestForHash);
     byte[] signatureBytes = this.keyPair.sign(hashBytes);
