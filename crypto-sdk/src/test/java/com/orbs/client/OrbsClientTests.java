@@ -82,4 +82,30 @@ public class OrbsClientTests {
     assertEquals(tranDeserialized.signatureData.publicKeyHex, "b9a91acbf23c22123a8253cfc4325d7b4b7a620465c57f932c7943f60887308b");
     assertTrue("check that a signature was generated (may be invalid, but generated, sig checks are elsewhere)", tranDeserialized.signatureData.signatureHex.length() > 0);
   }
+
+  @Test
+  public void test_generateCallRequest() {
+    Address senderAddress = new Address(PUBLIC_KEY,"640ed3", "T");
+    OrbsHost endpoint = new OrbsHost(true, "some.host.network", 1443);
+    OrbsClient client = new OrbsClient(endpoint, senderAddress , new ED25519Key(PUBLIC_KEY, PRIVATE_KEY));
+
+    String payload = "{\"method\": \"some_method\",\"args\": []";
+    Address contractAddress = new Address(PUBLIC_KEY, "101010", "T");
+    String res = client.generateCallRequest(contractAddress, payload);
+    Gson gson = new Gson();
+    CallContractRequest callDeserialized = gson.fromJson(res, CallContractRequest.class);
+    assertEquals(callDeserialized.payload, payload);
+    assertEquals(callDeserialized.contractAddressBase58, contractAddress.toString());
+    assertEquals(callDeserialized.senderAddressBase58, senderAddress.toString());
+  }
+
+  @Test
+  public void test_sendTransation_slug() {
+    assertEquals("public/sendTransaction", OrbsClient.SEND_TRANSACTION_SLUG);
+  }
+
+  @Test
+  public void test_callContract_slug() {
+    assertEquals("public/callContract", OrbsClient.CALL_CONTRACT_SLUG);
+  }
 }

@@ -22,6 +22,9 @@ public class OrbsClient {
   final Address senderAddress;
   final int timeoutInMs;
   final ED25519Key keyPair;
+  public static final String SEND_TRANSACTION_SLUG = "public/sendTransaction";
+  public static final String CALL_CONTRACT_SLUG = "public/callContract";
+
 
   public OrbsClient(OrbsHost endpoint, Address senderAddress, ED25519Key keyPair) {
     this(endpoint, senderAddress, keyPair,3000);
@@ -37,7 +40,7 @@ public class OrbsClient {
   public SendTransactionResponse sendTransaction(Address contractAddress, String payload) throws Exception {
     String requestJson = generateTransactionRequest(contractAddress, payload);
 
-    String rawRetVal = this.sendHTTPRequest("public/sendTransaction", requestJson);
+    String rawRetVal = this.sendHTTPRequest(OrbsClient.SEND_TRANSACTION_SLUG, requestJson);
     return parseSendTransactionResponse(rawRetVal);
   }
 
@@ -77,7 +80,7 @@ public class OrbsClient {
   public String call(Address contractAddress, String payload) throws Exception {
     String requestJson = generateCallRequest(contractAddress, payload);
 
-    return this.sendHTTPRequest("public/callContract", requestJson);
+    return this.sendHTTPRequest(OrbsClient.CALL_CONTRACT_SLUG, requestJson);
   }
 
   public String generateCallRequest(Address contractAddress, String payload) {
