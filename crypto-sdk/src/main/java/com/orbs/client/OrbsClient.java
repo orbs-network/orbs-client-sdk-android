@@ -1,11 +1,14 @@
 package com.orbs.client;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.orbs.cryptosdk.Address;
 import com.orbs.cryptosdk.ED25519Key;
 
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -63,11 +66,7 @@ public class OrbsClient {
     requestPayload.header.timestamp = String.valueOf(new Date().getTime());
     requestPayload.header.contractAddressBase58 = contractAddress.toString();
 
-    Gson gsonForHash = OrbsClient.getGsonStableSerializer();
-    String requestForHash = gsonForHash.toJson(requestPayload);
-    byte[] hashBytes = OrbsHashUtils.hash256(requestForHash);
-    byte[] signatureBytes = this.keyPair.sign(hashBytes);
-    String signatureHex = OrbsHashUtils.bytesToHex(signatureBytes);
+    String signatureHex = generateSignatureForTransaction(requestPayload);
 
     requestPayload.signatureData = new SendTransactionSignature();
     requestPayload.signatureData.publicKeyHex = this.keyPair.getPublicKey();
@@ -75,6 +74,14 @@ public class OrbsClient {
 
     Gson gson = new Gson();
     return gson.toJson(requestPayload);
+  }
+
+  public String generateSignatureForTransaction(SendTransactionRequest requestPayload) throws NoSuchAlgorithmException {
+    Gson gsonForHash = OrbsClient.getGsonStableSerializer();
+    String requestForHash = gsonForHash.toJson(requestPayload);
+    byte[] hashBytes = OrbsHashUtils.hash256(requestForHash);
+    byte[] signatureBytes = this.keyPair.sign(hashBytes);
+    return OrbsHashUtils.bytesToHex(signatureBytes);
   }
 
   public String call(Address contractAddress, String payload) throws Exception {

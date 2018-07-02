@@ -100,6 +100,25 @@ public class OrbsClientTests {
   }
 
   @Test
+  public void test_transaction_signature() throws Exception {
+    Address senderAddress = new Address(PUBLIC_KEY,"640ed3", "T");
+    OrbsHost endpoint = new OrbsHost(true, "some.host.network", 1443);
+    OrbsClient client = new OrbsClient(endpoint, senderAddress , new ED25519Key(PUBLIC_KEY, PRIVATE_KEY));
+
+    SendTransactionRequest req = new SendTransactionRequest();
+    req.header = new SendTransactionHeader.Builder()
+            .withContractAddress("abc")
+            .withSenderAddress("zxc")
+            .withTimestamp("123")
+            .build();
+    req.payload = "{some: json}";
+
+    String sig = client.generateSignatureForTransaction(req);
+    String EXPECTED_SIG = "6bf8a236b3d899a864a9ab6328313cc4ce9f75d22e421d13d11c9e7c66aabf93b8de7bc614f16aa30562ad4593285d8e6f4115b10bb362835324ebb6fd42990b";
+    assertEquals(EXPECTED_SIG, sig);
+  }
+
+  @Test
   public void test_sendTransation_slug() {
     assertEquals("public/sendTransaction", OrbsClient.SEND_TRANSACTION_SLUG);
   }
