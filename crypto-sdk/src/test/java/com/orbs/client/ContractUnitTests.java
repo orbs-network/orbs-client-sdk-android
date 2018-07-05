@@ -23,8 +23,32 @@ public class ContractUnitTests {
     Address address = new Address(PUBLIC_KEY,"640ed3", "T");
     OrbsHost endpoint = new OrbsHost(false, "dont_care", 80);
     OrbsClient client = new OrbsClient(endpoint, address , new ED25519Key(PUBLIC_KEY, PRIVATE_KEY));
-    final String response = "{\"transactionId\": \"some_id\"}";
-    SendTransactionResponse res = client.parseSendTransactionResponse(response);
+    final String SERVER_RESOPNSE = "{\"transactionId\": \"some_id\"}";
+    SendTransactionResponse res = client.parseSendTransactionResponse(SERVER_RESOPNSE);
     assertEquals(res.transactionId, "some_id");
+  }
+
+  @Test
+  public void test_generateSendTransactionPayload() throws Exception {
+    Address address = new Address(PUBLIC_KEY,"640ed3", "T");
+    OrbsHost endpoint = new OrbsHost(false, "dont_care", 80);
+    OrbsClient client = new OrbsClient(endpoint, address , new ED25519Key(PUBLIC_KEY, PRIVATE_KEY));
+    OrbsContract contract = new OrbsContract(client, "dont_care");
+    final String METHOD_NAME = "some_method";
+    final int ARG_FOR_TEST = 1;
+    String res = contract.generateSendTransactionPayload(METHOD_NAME, new Object[]{ARG_FOR_TEST});
+    assertEquals("{\"method\":\"some_method\",\"args\":[1]}", res);
+  }
+
+  @Test
+  public void test_generateCallPayload() throws Exception {
+    Address address = new Address(PUBLIC_KEY,"640ed3", "T");
+    OrbsHost endpoint = new OrbsHost(false, "dont_care", 80);
+    OrbsClient client = new OrbsClient(endpoint, address , new ED25519Key(PUBLIC_KEY, PRIVATE_KEY));
+    OrbsContract contract = new OrbsContract(client, "dont_care");
+    final String METHOD_NAME = "some_method";
+    final int ARG_FOR_TEST = 1;
+    String res = contract.generateSendTransactionPayload(METHOD_NAME, new Object[]{ARG_FOR_TEST});
+    assertEquals("{\"method\":\"some_method\",\"args\":[1]}", res);
   }
 }
