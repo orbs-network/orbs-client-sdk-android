@@ -12,10 +12,6 @@ public class SendTransactionHeader {
   @SerializedName("contractAddressBase58")
   public String contractAddressBase58;
 
-  public SendTransactionHeader() {
-
-  }
-
   public SendTransactionHeader(Builder builder) {
     this.version = builder.version;
     this.senderAddressBase58 = builder.senderAddressBase58;
@@ -24,10 +20,10 @@ public class SendTransactionHeader {
   }
 
   public static final class Builder {
-    public int version;
-    public String senderAddressBase58;
-    public String timestamp;
-    public String contractAddressBase58;
+    private int version;
+    private String senderAddressBase58;
+    private String timestamp;
+    private String contractAddressBase58;
 
     public Builder withVersion(int version) {
       this.version = version;

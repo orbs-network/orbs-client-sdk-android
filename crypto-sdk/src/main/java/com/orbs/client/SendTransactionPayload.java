@@ -14,8 +14,8 @@ public class SendTransactionPayload {
   }
 
   public static final class Builder {
-    public String method;
-    public Object[] args;
+    private String method;
+    private Object[] args;
 
     public Builder withMethod(String name) {
       this.method = name;

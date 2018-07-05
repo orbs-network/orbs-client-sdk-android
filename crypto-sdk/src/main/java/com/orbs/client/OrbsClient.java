@@ -60,17 +60,18 @@ public class OrbsClient {
   public String generateTransactionRequest(Address contractAddress, String payload) throws Exception {
     SendTransactionRequest requestPayload = new SendTransactionRequest();
     requestPayload.payload = payload;
-    requestPayload.header = new SendTransactionHeader();
-    requestPayload.header.version = 0;
-    requestPayload.header.senderAddressBase58 = this.senderAddress.toString();
-    requestPayload.header.timestamp = String.valueOf(new Date().getTime());
-    requestPayload.header.contractAddressBase58 = contractAddress.toString();
+    requestPayload.header = new SendTransactionHeader.Builder()
+            .withTimestamp(String.valueOf(new Date().getTime()))
+            .withSenderAddress(this.senderAddress.toString())
+            .withContractAddress(contractAddress.toString())
+            .build();
 
     String signatureHex = generateSignatureForTransaction(requestPayload);
 
-    requestPayload.signatureData = new SendTransactionSignature();
-    requestPayload.signatureData.publicKeyHex = this.keyPair.getPublicKey();
-    requestPayload.signatureData.signatureHex = signatureHex;
+    requestPayload.signatureData = new SendTransactionSignature.Builder()
+            .withPublicKeyHex(this.keyPair.getPublicKey())
+            .withSignatureData(signatureHex)
+            .build();
 
     Gson gson = new Gson();
     return gson.toJson(requestPayload);
